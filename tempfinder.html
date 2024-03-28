@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Finder</title>
+    <style type="text/css">
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Temperature Finder</h1>
+        <input type="text" id="cityInput" placeholder="Enter city name">
+        <button onclick="getTemperature()">Find Temperature</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        function getTemperature() {
+    const city = document.getElementById('cityInput').value;
+    const apiKey = 'dd4ccc2cc8bbac9dab95160835f3c621'; 
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('City not found!');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const temperature = data.main.temp;
+            const description = data.weather[0].description;
+            document.getElementById('result').innerHTML = `Temperature in ${city}: ${temperature}°C, ${description}`;
+        })
+        .catch(error => {
+            document.getElementById('result').innerHTML = error.message;
+        });
+}
+
+    </script>
+</body>
+</html>
